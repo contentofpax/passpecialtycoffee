@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Events — PAS Specialty Coffee</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1a3d6e;--brand:#2b5faa;--pale:#f0f5fc;--cream:#faf8f4;--cdark:#f0ece3;--gold:#c9a96e;--goldl:#e8d5b0;--white:#fff;--txt:#0f2340;--mid:#2a4a7a;--muted:#6b85a8;--bluel:#dce8f7;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',sans-serif;}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--txt);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:var(--blue);border-bottom:1px solid rgba(255,255,255,.08);transition:box-shadow .3s}
+nav.sc{box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.nlogo img{height:28px;width:auto}
+.nlinks{display:flex;gap:26px;list-style:none;align-items:center}
+.nlinks a{font-size:10.5px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s;position:relative}
+.nlinks a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nlinks a:hover,.nlinks a.act{color:var(--white)}.nlinks a:hover::after,.nlinks a.act::after{transform:scaleX(1)}
+.ncta{background:var(--gold)!important;color:var(--blue)!important;padding:8px 20px;border-radius:2px;font-size:10px!important;letter-spacing:.18em!important;font-weight:500!important}.ncta::after{display:none!important}.ncta:hover{background:var(--goldl)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:rgba(255,255,255,.8);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;z-index:190;background:var(--blue);border-bottom:1px solid rgba(255,255,255,.1);padding:20px 5vw 28px}
+.mobile-menu.open{display:block}.mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0}
+.mobile-menu a{display:block;padding:13px 0;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.07)}
+.mobile-menu .mmcta{margin-top:16px;background:var(--gold);color:var(--blue)!important;text-align:center;border-radius:2px;padding:13px;border-bottom:none;font-weight:500}
+.page-hero{min-height:320px;padding:68px 8vw 64px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;background:var(--blue)}
+.page-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(26,61,110,.93) 40%,rgba(26,61,110,.6));z-index:1}
+.page-hero-bg{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;filter:saturate(.85)}
+.page-hero-inner{position:relative;z-index:2}
+.ph-ey{display:flex;align-items:center;gap:12px;margin-bottom:14px}.ph-eyline{width:32px;height:1px;background:var(--gold)}.ph-ey span{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.ph-title{font-family:var(--serif);font-size:clamp(34px,5vw,64px);font-weight:300;color:var(--white);line-height:1.05}.ph-title em{font-style:italic;color:var(--goldl)}
+.ph-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.55);margin-top:10px;max-width:500px;line-height:1.8}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:18px}.eyeline{width:32px;height:1px;background:var(--brand)}.eyebrow span{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--brand);font-weight:500}
+.sectitle{font-family:var(--serif);font-size:clamp(28px,3.8vw,50px);font-weight:300;line-height:1.1;color:var(--txt);margin-bottom:18px}.sectitle em{font-style:italic;color:var(--brand)}
+.sbody{font-size:15px;font-weight:300;line-height:1.9;color:var(--mid);margin-bottom:14px}
+.btnprimary{background:var(--gold);color:var(--blue);padding:13px 30px;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:2px;display:inline-block;transition:background .25s,transform .2s;border:none;cursor:pointer;font-family:var(--sans)}.btnprimary:hover{background:var(--goldl);transform:translateY(-1px)}
+.btnout{border:1px solid rgba(255,255,255,.35);color:var(--white);padding:13px 30px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:2px;display:inline-block;transition:all .25s}.btnout:hover{border-color:var(--white);background:rgba(255,255,255,.08)}
+.btnoutd{border:1px solid var(--brand);color:var(--brand);padding:10px 22px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border-radius:2px;display:inline-block;transition:all .2s}.btnoutd:hover{background:var(--brand);color:var(--white)}
+footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(255,255,255,.08)}
+.flogo img{height:22px;width:auto;opacity:.65}.fnav{display:flex;gap:20px;list-style:none;flex-wrap:wrap}.fnav a{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}.fnav a:hover{color:var(--gold)}.fcopy{font-size:11px;color:rgba(255,255,255,.22)}
+.rev{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}.rev.vis{opacity:1;transform:translateY(0)}.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+@media(max-width:860px){.nlinks{display:none}.hamburger{display:flex}}
+
+.events-wrap{padding:72px 8vw 100px}
+.events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:52px}
+.ec{border:1px solid rgba(43,95,170,.15);border-radius:6px;overflow:hidden;background:var(--white);transition:transform .2s,box-shadow .2s}
+.ec:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(26,61,110,.13)}
+.ec-head{background:var(--blue);padding:28px;position:relative}
+.ec-date{font-family:var(--serif);font-size:48px;font-weight:300;color:var(--white);line-height:1}
+.ec-month{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.ec-tag{position:absolute;top:20px;right:20px;font-size:8px;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px;background:var(--gold);color:var(--blue);border-radius:1px}
+.ec-body{padding:24px 28px 28px}
+.ec-title{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--txt);margin-bottom:10px;line-height:1.2}
+.ec-desc{font-size:13px;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.ec-meta{font-size:11px;color:var(--mid);letter-spacing:.04em;margin-bottom:20px}
+@media(max-width:860px){.events-grid{grid-template-columns:1fr}}
+</style></head><body><nav id="nav">
+  <a href="index.html" class="nlogo"><img src="logo.png" alt="PAS"></a>
+  <ul class="nlinks"><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="events.html" class="act">Events</a></li><li><a href="contact.html">Contact</a></li><li><a href="reservations.html" class="ncta">Reserve a Table</a></li></ul>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mmenu"><ul><li><a href="index.html" onclick="toggleMenu()">Home</a></li><li><a href="menu.html" onclick="toggleMenu()">Menu</a></li><li><a href="gallery.html" onclick="toggleMenu()">Gallery</a></li><li><a href="events.html" onclick="toggleMenu()">Events</a></li><li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+  <li><a href="reservations.html" class="mmcta" onclick="toggleMenu()">Reserve a Table</a></li>
+</ul></div>
+<div class="page-hero">
+  <img class="page-hero-bg" src="events2.jpeg" alt="Events at PAS">
+  <div class="page-hero-inner">
+    <div class="ph-ey"><div class="ph-eyline"></div><span>At PAS</span></div>
+    <h1 class="ph-title">Happenings &amp; <em>Events.</em></h1>
+    <p class="ph-sub">Workshops, tastings, and evenings worth showing up for. Check back regularly.</p>
+  </div>
+</div>
+<div class="events-wrap">
+  <div class="eyebrow rev"><div class="eyeline"></div><span>Upcoming</span></div>
+  <h2 class="sectitle rev d1">What's on at <em>PAS.</em></h2>
+  <div class="events-grid">
+    <div class="ec rev">
+      <div class="ec-head"><div class="ec-date">21</div><div class="ec-month">June 2026</div><div class="ec-tag">Workshop</div></div>
+      <div class="ec-body">
+        <div class="ec-title">Pour-Over Masterclass</div>
+        <p class="ec-desc">Learn the art of manual brewing from our baristas — grind size, water temperature, bloom time, and pour technique across V60, Aeropress, and French Press.</p>
+        <div class="ec-meta">☕ 10:00 AM · 90 minutes · Limited to 8 seats</div>
+        <a href="reservations.html" class="btnprimary" style="font-size:10px;padding:10px 22px">Reserve Your Spot</a>
+      </div>
+    </div>
+    <div class="ec rev d1">
+      <div class="ec-head"><div class="ec-date">28</div><div class="ec-month">June 2026</div><div class="ec-tag">Tasting</div></div>
+      <div class="ec-body">
+        <div class="ec-title">Origin Coffee Tasting</div>
+        <p class="ec-desc">A guided journey through single-origin beans — understanding terroir, processing methods, and how each origin expresses its character in the cup.</p>
+        <div class="ec-meta">☕ 4:00 PM · 2 hours · Reservations required</div>
+        <a href="reservations.html" class="btnprimary" style="font-size:10px;padding:10px 22px">Reserve Your Spot</a>
+      </div>
+    </div>
+    <div class="ec rev d2">
+      <div class="ec-head"><div class="ec-date">05</div><div class="ec-month">July 2026</div><div class="ec-tag">Social</div></div>
+      <div class="ec-body">
+        <div class="ec-title">Matcha & Music Evening</div>
+        <p class="ec-desc">A relaxed Sunday evening — live acoustic music, the full matcha menu, and a special seasonal drink available for that night only. Open to all.</p>
+        <div class="ec-meta">🍵 6:00 PM – 9:00 PM · Walk-in welcome</div>
+        <a href="reservations.html" class="btnprimary" style="font-size:10px;padding:10px 22px">Reserve a Table</a>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:60px;padding-top:48px;border-top:1px solid var(--bluel)" class="rev">
+    <div class="eyebrow" style="justify-content:center"><div class="eyeline"></div><span>Stay in the loop</span><div class="eyeline"></div></div>
+    <p style="font-size:14px;font-weight:300;color:var(--muted);max-width:400px;margin:12px auto 28px;line-height:1.8">We announce new events on our Google page first. Follow us to never miss a workshop or evening at PAS.</p>
+    <a href="https://maps.google.com/search?q=PAS+Specialty+Coffee+Agonda+Goa" target="_blank" class="btnprimary">Follow us on Google Maps ↗</a>
+  </div>
+</div>
+<footer>
+  <div class="flogo"><img src="logofooter.png" alt="PAS"></div>
+  <ul class="fnav"><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="events.html">Events</a></li><li><a href="reservations.html">Reserve</a></li><li><a href="contact.html">Contact</a></li></ul>
+  <div class="fcopy">© 2026 Pax Edutainment Pvt. Ltd. · Agonda, Goa</div>
+</footer><script>
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>40));
+function rev(){document.querySelectorAll('.rev:not(.vis)').forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-60)el.classList.add('vis')})}
+window.addEventListener('scroll',rev,{passive:true});rev();
+function toggleMenu(){const m=document.getElementById('mmenu');const h=document.querySelector('.hamburger');m.classList.toggle('open');h.classList.toggle('open');}
+</script></body></html>
