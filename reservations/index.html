@@ -120,8 +120,15 @@ function allSlots(){
 
 function loadSlots(){
   const sel=document.getElementById('resTime');
-  const date=document.getElementById('resDate').value;
+  const dateInput=document.getElementById('resDate');
+  const date=dateInput.value;
   if(!date){sel.innerHTML='<option value="">— pick a date first —</option>';return;}
+  if(date<todayIST()){
+    alert('Please select a valid date — past dates cannot be booked.');
+    dateInput.value='';
+    sel.innerHTML='<option value="">— pick a date first —</option>';
+    return;
+  }
   const slots=allSlots();
   sel.innerHTML='';
   slots.forEach(s=>{const opt=document.createElement('option');opt.value=s;opt.textContent=s;sel.appendChild(opt);});
