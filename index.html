@@ -221,7 +221,19 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 .vdetails{display:flex;flex-direction:column;gap:24px}
 .vbtns{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
 .vmap{border-radius:6px;overflow:hidden;box-shadow:0 8px 40px rgba(26,61,110,.12);border:1px solid rgba(43,95,170,.15)}
-.vmap iframe{width:100%;height:380px;border:none;display:block}
+.vmap iframe{width:100%;height:340px;border:none;display:block}
+.vmap-dir{display:block;text-align:center;padding:14px;background:var(--brand);color:var(--white);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.vmap-dir:hover{background:var(--blue)}
+.vval a{color:var(--brand);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.vval a:hover{border-bottom-color:var(--brand)}
+.contact-pills{display:flex;gap:10px;flex-wrap:wrap}
+.contact-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:20px;border:1px solid rgba(43,95,170,.2);background:var(--pale);color:var(--brand);font-size:13px;font-weight:400;text-decoration:none;transition:all .2s}
+.contact-pill:hover{background:var(--brand);color:var(--white);border-color:var(--brand)}
+.contact-pill svg{width:15px;height:15px;flex-shrink:0}
+.contact-pill.wa{background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.35);color:#1f9e52}
+.contact-pill.wa:hover{background:#25d366;color:var(--white);border-color:#25d366}
+.menu-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.menu-badge{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);background:var(--pale);border:1px solid rgba(43,95,170,.15);padding:7px 15px;border-radius:20px;font-weight:500;white-space:nowrap}
 
 @media(max-width:1100px) and (min-width:901px){#hero{grid-template-columns:1fr 1fr}.himgside img{min-height:600px}}
 @media(max-width:900px){
@@ -272,6 +284,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
       <div><div class="hslbl">Hours</div><div class="hsval">Daily · 07:30 to 22:30</div></div>
       <div><div class="hslbl">Google Rating</div><div class="hsval">5.0 ★ · 750+ reviews</div></div>
       <div><div class="hslbl">Kitchen</div><div class="hsval">100% Vegetarian</div></div>
+      <div><div class="hslbl">Work Friendly</div><div class="hsval">Fast WiFi · Workspaces Available</div></div>
     </div>
   </div>
   <div class="himgside">
@@ -346,6 +359,11 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
   <div class="mphdr rev">
     <div class="eyebrow"><div class="eyeline"></div><span>The Menu</span></div>
     <h2 class="sectitle" style="margin-bottom:0">All day, <em>slow cooked.</em></h2>
+    <div class="menu-badges">
+      <span class="menu-badge">100% Vegetarian</span>
+      <span class="menu-badge">Vegan Options</span>
+      <span class="menu-badge">Gluten-Free Options</span>
+    </div>
   </div>
   <div class="mpcards">
     <div class="mpcard rev d1">
@@ -455,7 +473,12 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
     <h2 class="sectitle">Come <em>say hello.</em></h2>
     <div><div class="vlbl">Address</div><div class="vval">House no. 362/A, Agonda Beach Road<br>Agonda, Canacona · Goa 403702</div></div>
     <div><div class="vlbl">Hours</div><div class="vval">Daily · 07:30 to 22:30</div></div>
-    <div><div class="vlbl">Kitchen</div><div class="vval">100% Vegetarian</div></div>
+    <div><div class="vlbl">Kitchen</div><div class="vval">100% Vegetarian · Vegan & Gluten-Free Options Available</div></div>
+    <div><div class="vlbl">Phone</div><div class="vval contact-pills">
+      <a href="tel:+919753146969" class="contact-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+91 97531 46969</a>
+      <a href="https://wa.me/919930865842" target="_blank" rel="noopener" class="contact-pill wa"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.19 3.03 14.7 2 12.04 2zm0 18.13h-.01c-1.5 0-2.98-.4-4.27-1.16l-.31-.18-3.11.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.26-4.35c0-4.51 3.67-8.18 8.19-8.18 2.19 0 4.24.85 5.79 2.4a8.14 8.14 0 0 1 2.4 5.79c0 4.51-3.68 8.19-8.19 8.19zm4.49-6.13c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08 0 1.22.89 2.4 1.02 2.57.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>WhatsApp</a>
+    </div></div>
+    <div><div class="vlbl">Email</div><div class="vval"><a href="mailto:contact@passpecialtycoffee.com">contact@passpecialtycoffee.com</a></div></div>
     <div class="vbtns">
       <a href="/reservations/" class="btnprimary">Reserve a Table</a>
       <a href="/menu/" class="btnoutd">View the Menu</a>
@@ -463,6 +486,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
   </div>
   <div class="vmap rev d1">
     <iframe src="https://maps.google.com/maps?q=PAS+Specialty+Coffee+Agonda+Goa&output=embed&z=16" allowfullscreen loading="lazy" title="PAS location"></iframe>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=15.0422837,73.9883789&destination_place_id=PAS+Specialty+Coffee" target="_blank" rel="noopener" class="vmap-dir">Get Directions ↗</a>
   </div>
 </section>
 
