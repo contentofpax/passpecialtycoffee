@@ -48,7 +48,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 @media(max-width:860px){.nlinks{display:none}.hamburger{display:flex}}
 
 .contact-wrap{padding:72px 8vw 100px}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:52px;align-items:start}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:52px;align-items:stretch}
 .cb{margin-bottom:32px}
 .cb-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);font-weight:500;margin-bottom:9px;display:flex;align-items:center;gap:10px}
 .cb-lbl::after{content:'';flex:1;height:1px;background:var(--bluel)}
@@ -61,11 +61,11 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 .contact-pill svg{width:15px;height:15px;flex-shrink:0}
 .contact-pill.wa{background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.35);color:#1f9e52}
 .contact-pill.wa:hover{background:#25d366;color:var(--white);border-color:#25d366}
-.cmap{border-radius:6px;overflow:hidden;box-shadow:0 8px 40px rgba(26,61,110,.12);border:1px solid rgba(43,95,170,.15)}
-.cmap iframe{width:100%;height:380px;border:none;display:block}
+.cmap{border-radius:6px;overflow:hidden;box-shadow:0 8px 40px rgba(26,61,110,.12);border:1px solid rgba(43,95,170,.15);height:100%;display:flex;flex-direction:column}
+.cmap iframe{width:100%;flex:1;min-height:380px;border:none;display:block}
 .cmap-dir{display:block;text-align:center;padding:14px;background:var(--brand);color:var(--white);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .2s}
 .cmap-dir:hover{background:var(--blue)}
-@media(max-width:860px){.contact-grid{grid-template-columns:1fr;gap:48px}.contact-wrap{padding:48px 6vw 72px}.cmap iframe{height:300px}}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr;gap:48px}.contact-wrap{padding:48px 6vw 72px}.cmap iframe{min-height:300px}}
 </style></head><body><nav id="nav">
   <a href="/" class="nlogo"><img src="../logo.png" alt="PAS"></a>
   <ul class="nlinks"><li><a href="/">Home</a></li><li><a href="/menu/">Menu</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/contact/" class="act">Contact</a></li><li><a href="/reservations/" class="ncta">Reserve a Table</a></li></ul>
