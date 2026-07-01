@@ -48,8 +48,8 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 
 
 .menu-wrap{padding:60px 8vw 100px}
-.menu-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
-.menu-badge{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);background:var(--pale);border:1px solid rgba(43,95,170,.15);padding:7px 15px;border-radius:20px;font-weight:500;white-space:nowrap}
+.menu-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.menu-badge{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);padding:7px 15px;border-radius:20px;font-weight:500;white-space:nowrap}
 .menu-tabs-bar{display:flex;gap:0;border:1px solid rgba(43,95,170,.2);border-radius:3px;overflow:hidden;width:fit-content;margin-bottom:52px}
 .mtab{padding:11px 28px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;background:transparent;border:none;cursor:pointer;color:var(--mid);transition:all .2s;font-family:var(--sans)}
 .mtab.active{background:var(--blue);color:var(--white)}.mtab:not(.active):hover{background:var(--pale)}
@@ -80,14 +80,14 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
     <div class="ph-ey"><div class="ph-eyline"></div><span>PAS Specialty Coffee</span></div>
     <h1 class="ph-title">All day, <em>slow cooked.</em></h1>
     <p class="ph-sub">A slow kitchen, a quiet brew bar, and food that's made with care.</p>
+    <div class="menu-badges rev">
+      <span class="menu-badge">100% Vegetarian</span>
+      <span class="menu-badge">Vegan Options</span>
+      <span class="menu-badge">Gluten-Free Options</span>
+    </div>
   </div>
 </div>
 <div class="menu-wrap">
-  <div class="menu-badges rev">
-    <span class="menu-badge">100% Vegetarian</span>
-    <span class="menu-badge">Vegan Options</span>
-    <span class="menu-badge">Gluten-Free Options</span>
-  </div>
   <div class="menu-tabs-bar">
     <button class="mtab active" onclick="switchTab('food',this)">Food</button>
     <button class="mtab" onclick="switchTab('drinks',this)">Drinks</button>
