@@ -151,6 +151,12 @@ function validateEmail(email){
   return /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.(com|org|net|edu|co|in|io|gov|uk|us|info|biz)$/i.test(email);
 }
 
+function todayIST(){
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const get=t=>parts.find(p=>p.type===t).value;
+  return get('year')+'-'+get('month')+'-'+get('day');
+}
+
 function submitForm(){
   const btn=document.getElementById('sbtn');
   const phone=document.getElementById('resPhone').value;
@@ -165,6 +171,7 @@ function submitForm(){
     message:document.getElementById('resMsg').value
   };
   if(!data.name||!phone||!data.email||!data.date||!data.time){alert('Please fill in all required fields.');return;}
+  if(data.date<todayIST()){alert('Please select a valid date — past dates cannot be booked.');return;}
   if(!/^\d{10}$/.test(phone)){alert('Please enter a valid 10-digit mobile number.');return;}
   if(!validateEmail(email)){alert('Please enter a valid email address.');return;}
   btn.textContent='Sending...';btn.disabled=true;
@@ -182,7 +189,7 @@ function submitForm(){
   <ul class="fnav"><li><a href="/">Home</a></li><li><a href="/menu/">Menu</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/reservations/">Reserve</a></li><li><a href="/contact/">Contact</a></li></ul>
   <div class="fcopy">© 2026 Pax Edutainment Pvt. Ltd. · Agonda, Goa</div>
 </footer><script>
-document.getElementById('resDate').min=new Date().toISOString().split('T')[0];
+document.getElementById('resDate').min=todayIST();
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>40));
 function rev(){document.querySelectorAll('.rev:not(.vis)').forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-60)el.classList.add('vis')})}
 window.addEventListener('scroll',rev,{passive:true});rev();
