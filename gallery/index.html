@@ -21,7 +21,7 @@
   --serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',sans-serif;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--cream);color:var(--txt);overflow-x:hidden}
+body{font-family:var(--sans);background:var(--cream);color:var(--txt);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:var(--blue);border-bottom:1px solid rgba(255,255,255,.08);transition:box-shadow .3s}
 nav.sc{box-shadow:0 4px 24px rgba(0,0,0,.3)}
 .nlogo{display:flex;align-items:center;text-decoration:none}
@@ -109,7 +109,7 @@ nav.sc{box-shadow:0 4px 24px rgba(0,0,0,.3)}
 .btn-insta{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.72);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:2px;transition:all .3s;font-family:var(--sans)}
 .btn-insta svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
 .btn-insta:hover{border-color:var(--gold);color:var(--gold)}
-footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(255,255,255,.08)}
+footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(255,255,255,.08);margin-top:auto;flex-shrink:0}
 .fnav{display:flex;gap:20px;list-style:none;flex-wrap:wrap}
 .fnav a{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
 .fnav a:hover{color:var(--gold)}
@@ -408,6 +408,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
       </div>
     </div>
   </div>
+</section>
 
 <div class="lightbox" id="lightbox" onclick="closeLightboxBg(event)">
   <button class="lb-close" onclick="closeLightbox()">&#215;</button>
