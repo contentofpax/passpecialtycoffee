@@ -103,9 +103,9 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 }
 
 /* HERO */
-#hero{display:grid;grid-template-columns:1fr 1fr;padding-top:68px;background:var(--blue);position:relative;overflow:hidden;gap:0}
+#hero{display:grid;grid-template-columns:1fr 1fr;padding-top:68px;background:var(--blue);position:relative;overflow:hidden;gap:0;min-height:640px}
 .hbg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 50%,rgba(43,95,170,.5) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(58,114,196,.28) 0%,transparent 40%)}
-.hcontent{display:flex;flex-direction:column;justify-content:center;padding:80px 5vw 80px 8vw;position:relative;z-index:2}
+.hcontent{display:flex;flex-direction:column;justify-content:center;padding:56px 5vw 56px 8vw;position:relative;z-index:2}
 .hey{display:flex;align-items:center;gap:14px;margin-bottom:24px}
 .heyline{width:40px;height:1px;background:var(--gold)}
 .hey span{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
@@ -117,7 +117,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
 .hslbl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:4px}
 .hsval{font-size:13px;font-weight:300;color:rgba(255,255,255,.8)}
 .himgside{position:relative;overflow:hidden}
-.himgside img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;min-height:500px}
+.himgside img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;min-height:500px;max-height:920px}
 .himgov{position:absolute;inset:0;left:-4px;background:linear-gradient(to right,rgba(26,61,110,1) 0%,rgba(26,61,110,.98) 4%,rgba(26,61,110,.9) 12%,rgba(26,61,110,.75) 22%,rgba(26,61,110,.52) 35%,rgba(26,61,110,.28) 50%,rgba(26,61,110,.1) 65%,rgba(26,61,110,.03) 80%,rgba(26,61,110,0) 100%)}
 
 /* STORY */
@@ -244,6 +244,7 @@ footer{background:var(--blue);padding:40px 8vw;display:flex;justify-content:spac
   .simg{order:1;height:auto;min-height:unset}.simg img{height:auto;min-height:unset;object-fit:contain;width:100%}
   .scontent{order:2}
   .simgov{background:none}
+  #hero{min-height:unset}
   .himgside{height:auto;min-height:unset}.himgside img{min-height:unset;height:auto;object-fit:contain}.barimg{height:auto}.barimg img{height:auto;object-fit:contain}
   .gp-grid{grid-template-columns:1fr}
   .gp-img{aspect-ratio:16/9}
