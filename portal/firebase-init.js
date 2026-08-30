@@ -3,14 +3,13 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
-// TODO: replace with the config from Firebase Console -> Project settings -> Your apps -> Web app
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA9gcUH2_eEcVPEyfkKmKHOFlTJIXnTIKk",
+  authDomain: "pas-specialty-coffee.firebaseapp.com",
+  projectId: "pas-specialty-coffee",
+  storageBucket: "pas-specialty-coffee.firebasestorage.app",
+  messagingSenderId: "1019385155949",
+  appId: "1:1019385155949:web:b2b46684214403a79c4a64"
 };
 
 export const app = initializeApp(firebaseConfig);
