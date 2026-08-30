@@ -15,6 +15,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // TODO: keep this in sync with REDEEM_COST in portal/firebase-init.js
+    function redeemCost() {
+      return 50;
+    }
+
     match /customers/{uid} {
       allow read: if isSignedIn() && (request.auth.uid == uid || isStaff());
       allow create: if isSignedIn() && request.auth.uid == uid
@@ -31,7 +36,8 @@ service cloud.firestore {
       allow create: if isSignedIn()
                     && request.resource.data.uid == request.auth.uid
                     && request.resource.data.status == 'pending'
-                    && request.resource.data.creditsAwarded == 0;
+                    && request.resource.data.creditsAwarded == 0
+                    && request.resource.data.proofType in ['google_review', 'instagram_post', 'instagram_story'];
       allow update: if isStaff();
       allow delete: if false;
     }
@@ -40,7 +46,9 @@ service cloud.firestore {
       allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
       allow create: if isSignedIn()
                     && request.resource.data.uid == request.auth.uid
-                    && request.resource.data.status == 'pending';
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.creditsCost == redeemCost()
+                    && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.credits >= redeemCost();
       allow update: if isStaff();
       allow delete: if false;
     }

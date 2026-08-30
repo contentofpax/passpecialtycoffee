@@ -82,7 +82,18 @@ onAuthStateChanged(auth, (user) => {
 window.doLogout = function(){ signOut(auth).then(() => location.href = '/portal/'); };
 
 function typeLabel(t){
-  return { google_review: 'Google Review', instagram_post: 'Instagram Post', instagram_story: 'Instagram Story' }[t] || t;
+  return { google_review: 'Google Review', instagram_post: 'Instagram Post', instagram_story: 'Instagram Story' }[t] || escapeHtml(t);
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function safeLinkHtml(link){
+  if (!link) return '';
+  const esc = escapeHtml(link);
+  if (/^https?:\/\//i.test(link)) return '<a href="' + esc + '" target="_blank" rel="noopener noreferrer">' + esc + '</a>';
+  return esc;
 }
 
 function loadVisits(){
@@ -98,10 +109,12 @@ function loadVisits(){
       const distText = v.distanceMeters == null ? 'no location' : (v.distanceMeters <= 300 ? '<span class="dist-ok">' + v.distanceMeters + 'm away</span>' : '<span class="dist-warn">' + (v.distanceMeters/1000).toFixed(1) + 'km away</span>');
       const row = document.createElement('div');
       row.className = 'req';
+      const photoHtml = v.proofImageUrl ? '<a href="' + v.proofImageUrl + '" target="_blank" rel="noopener noreferrer"><img src="' + v.proofImageUrl + '" alt="Uploaded proof" style="max-width:140px;max-height:100px;border-radius:4px;display:block;margin-top:8px;object-fit:cover"></a>' : '';
       row.innerHTML =
         '<div class="req-main">' +
-          '<div class="req-title">' + typeLabel(v.proofType) + ' &middot; ' + (v.phone || '') + '</div>' +
-          '<div class="req-sub">' + distText + ' &middot; ' + (v.proofLink ? '<a href="' + v.proofLink + '" target="_blank" rel="noopener">' + v.proofLink + '</a>' : '') + (v.proofNote ? ' &middot; ' + v.proofNote : '') + '</div>' +
+          '<div class="req-title">' + typeLabel(v.proofType) + ' &middot; ' + escapeHtml(v.phone) + '</div>' +
+          '<div class="req-sub">' + distText + (v.proofLink ? ' &middot; ' + safeLinkHtml(v.proofLink) : '') + (v.proofNote ? ' &middot; ' + escapeHtml(v.proofNote) : '') + '</div>' +
+          photoHtml +
         '</div>' +
         '<div class="req-actions">' +
           '<input type="number" class="creditinput" value="10" min="1" id="credits-' + d.id + '">' +
@@ -126,12 +139,13 @@ function loadRedemptions(){
     list.innerHTML = '';
     snap.forEach((d) => {
       const r = d.data();
+      const cost = Number(r.creditsCost) || 0;
       const row = document.createElement('div');
       row.className = 'req';
       row.innerHTML =
-        '<div class="req-main"><div class="req-title">' + (r.phone || '') + ' &middot; ' + r.creditsCost + ' credits</div></div>' +
+        '<div class="req-main"><div class="req-title">' + escapeHtml(r.phone) + ' &middot; ' + cost + ' credits</div></div>' +
         '<div class="req-actions">' +
-          '<button class="btnok" onclick="approveRedemption(\'' + d.id + '\', \'' + r.uid + '\', ' + r.creditsCost + ')">Approve</button>' +
+          '<button class="btnok" onclick="approveRedemption(\'' + d.id + '\', \'' + r.uid + '\', ' + cost + ')">Approve</button>' +
           '<button class="btnrej" onclick="rejectRedemption(\'' + d.id + '\')">Reject</button>' +
         '</div>';
       list.appendChild(row);
