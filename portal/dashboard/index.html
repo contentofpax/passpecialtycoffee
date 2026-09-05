@@ -145,6 +145,17 @@ nav.sc{box-shadow:0 4px 24px rgba(0,0,0,.3)}
     <h2 class="sectitle" style="margin-bottom:16px;font-size:22px">Your <em>coupons.</em></h2>
     <div id="couponsList"><div class="empty">No coupons yet — redeem credits above to get one.</div></div>
   </div>
+
+  <div class="card">
+    <h2 class="sectitle" style="margin-bottom:6px;font-size:22px">Your <em>details.</em></h2>
+    <p class="desc">Update your name or email anytime. Your mobile number can't be changed here since it's how we identify your account.</p>
+    <div class="msg err" id="profileErr"></div>
+    <div class="msg ok" id="profileOk">Saved.</div>
+    <div class="fg"><label class="fl">Full name</label><input type="text" class="fi" id="editName"></div>
+    <div class="fg"><label class="fl">Email address</label><input type="email" class="fi" id="editEmail" oninput="this.value=this.value.toLowerCase()"></div>
+    <div class="fg"><label class="fl">Mobile number</label><input type="text" class="fi" id="editPhone" disabled style="opacity:.6;cursor:not-allowed"></div>
+    <button class="btnprimary" id="saveProfileBtn" onclick="saveProfileEdit()">Save Changes</button>
+  </div>
 </div>
 
 <footer style="background:var(--blue);padding:40px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(255,255,255,.08)">
@@ -166,7 +177,7 @@ function toggleMenu(){const m=document.getElementById('mmenu');const h=document.
 <script type="module">
 import { auth, db, storage, CAFE_LAT, CAFE_LNG, CAFE_RADIUS_METERS, REDEEM_COST, creditsForProof, STAFF_PHONES, distanceMeters } from "/portal/firebase-init.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { doc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { doc, getDoc, setDoc, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 let currentUser = null;
@@ -186,6 +197,9 @@ onAuthStateChanged(auth, async (user) => {
   }
   currentName = snap.data().name;
   document.getElementById('custName').textContent = currentName.split(' ')[0];
+  document.getElementById('editName').value = currentName;
+  document.getElementById('editEmail').value = snap.data().email || '';
+  document.getElementById('editPhone').value = user.phoneNumber;
   if (STAFF_PHONES.includes(user.phoneNumber)) {
     document.getElementById('staffLink').style.display = '';
   }
@@ -332,6 +346,30 @@ window.requestRedeem = async function(){
     btn.textContent = 'Redeem ' + REDEEM_COST + ' Credits';
     btn.disabled = false;
     console.error(e);
+  }
+};
+
+window.saveProfileEdit = async function(){
+  const errEl = document.getElementById('profileErr');
+  const okEl = document.getElementById('profileOk');
+  errEl.classList.remove('show'); okEl.classList.remove('show');
+  const name = document.getElementById('editName').value.trim();
+  const email = document.getElementById('editEmail').value.trim();
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.classList.add('show'); return; }
+  if (!/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/i.test(email)) { errEl.textContent = 'Please enter a valid email address.'; errEl.classList.add('show'); return; }
+  const btn = document.getElementById('saveProfileBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    await setDoc(doc(db, 'customers', currentUser.uid), { name, email }, { merge: true });
+    currentName = name;
+    document.getElementById('custName').textContent = name.split(' ')[0];
+    okEl.classList.add('show');
+  } catch (e) {
+    errEl.textContent = 'Something went wrong saving your details. Please try again.';
+    errEl.classList.add('show');
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save Changes';
   }
 };
 </script>
