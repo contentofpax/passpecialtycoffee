@@ -15,9 +15,9 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // TODO: keep this in sync with REDEEM_COST in portal/firebase-init.js
-    function redeemCost() {
-      return 100;
+    // TODO: keep this in sync with MIN_REDEEM_CREDITS in portal/firebase-init.js
+    function minRedeemCost() {
+      return 200;
     }
 
     match /customers/{uid} {
@@ -48,8 +48,9 @@ service cloud.firestore {
       allow create: if isSignedIn()
                     && request.resource.data.uid == request.auth.uid
                     && request.resource.data.status == 'pending'
-                    && request.resource.data.creditsCost == redeemCost()
-                    && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.credits >= redeemCost();
+                    && request.resource.data.creditsCost is number
+                    && request.resource.data.creditsCost >= minRedeemCost()
+                    && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.credits >= request.resource.data.creditsCost;
       allow update: if isStaff();
       allow delete: if false;
     }
