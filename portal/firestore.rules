@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // TODO: replace with the real mobile numbers (E.164 format, e.g. +9197XXXXXXXX)
+    // of the owner/staff who should have access to the /portal/staff/ dashboard.
+    function isStaff() {
+      return request.auth != null &&
+        request.auth.token.phone_number in [
+          '+917869196341'
+        ];
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // TODO: keep these in sync with MIN_REDEEM_CREDITS / MAX_REDEEM_CREDITS in portal/firebase-init.js
+    function minRedeemCost() {
+      return 100;
+    }
+    function maxRedeemCost() {
+      return 500;
+    }
+
+    match /customers/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isStaff());
+      allow create: if isSignedIn() && request.auth.uid == uid
+                    && request.resource.data.credits == 0;
+      allow update: if isStaff()
+                    || (isSignedIn() && request.auth.uid == uid
+                        && request.resource.data.credits <= resource.data.credits
+                        && request.resource.data.phone == resource.data.phone);
+      allow delete: if false;
+    }
+
+    match /creditGrants/{grantId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isStaff();
+      allow update: if isStaff()
+                    || (isSignedIn() && request.auth.uid == resource.data.uid
+                        && request.resource.data.remaining <= resource.data.remaining
+                        && request.resource.data.remaining >= 0
+                        && request.resource.data.uid == resource.data.uid
+                        && request.resource.data.amount == resource.data.amount
+                        && request.resource.data.expiresAt == resource.data.expiresAt
+                        && request.resource.data.earnedAt == resource.data.earnedAt
+                        && request.resource.data.expiredFlag == true);
+      allow delete: if false;
+    }
+
+    match /visits/{visitId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.creditsAwarded == 0
+                    && request.resource.data.proofType in ['google_review', 'instagram_post', 'instagram_story', 'bill_amount']
+                    && (request.resource.data.proofType != 'bill_amount' || (request.resource.data.billAmount is number && request.resource.data.billAmount > 0));
+      allow update: if isStaff();
+      allow delete: if false;
+    }
+
+    match /redemptionRequests/{reqId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.creditsCost is number
+                    && request.resource.data.creditsCost >= minRedeemCost()
+                    && request.resource.data.creditsCost <= maxRedeemCost()
+                    && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.credits >= request.resource.data.creditsCost;
+      allow update: if isStaff();
+      allow delete: if false;
+    }
+
+    match /coupons/{couponId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isStaff();
+      allow update: if isStaff();
+      allow delete: if false;
+    }
+  }
+}
