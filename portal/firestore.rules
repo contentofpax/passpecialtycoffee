@@ -7,7 +7,7 @@ service cloud.firestore {
     function isStaff() {
       return request.auth != null &&
         request.auth.token.phone_number in [
-          '+910000000000'
+          '+917869196341'
         ];
     }
 
