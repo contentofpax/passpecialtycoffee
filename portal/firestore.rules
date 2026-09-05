@@ -26,8 +26,22 @@ service cloud.firestore {
                     && request.resource.data.credits == 0;
       allow update: if isStaff()
                     || (isSignedIn() && request.auth.uid == uid
-                        && request.resource.data.credits == resource.data.credits
+                        && request.resource.data.credits <= resource.data.credits
                         && request.resource.data.phone == resource.data.phone);
+      allow delete: if false;
+    }
+
+    match /creditGrants/{grantId} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isStaff());
+      allow create: if isStaff();
+      allow update: if isStaff()
+                    || (isSignedIn() && request.auth.uid == resource.data.uid
+                        && request.resource.data.remaining <= resource.data.remaining
+                        && request.resource.data.remaining >= 0
+                        && request.resource.data.uid == resource.data.uid
+                        && request.resource.data.amount == resource.data.amount
+                        && request.resource.data.expiresAt == resource.data.expiresAt
+                        && request.resource.data.earnedAt == resource.data.earnedAt);
       allow delete: if false;
     }
 
