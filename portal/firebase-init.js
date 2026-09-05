@@ -43,9 +43,9 @@ export function isCouponExpired(coupon) {
 export const CREDIT_RULES = {
   google_review: 10,
   instagram_story: 20,
-  instagram_post: 50
+  instagram_post: 30
 };
-export const BILL_CREDIT_RATE = 0.10; // 10% of bill amount, in credits
+export const BILL_CREDIT_RATE = 0.01; // 1 credit per ₹100 spent
 
 export function creditsForProof(proofType, billAmount) {
   if (proofType === 'bill_amount') {
