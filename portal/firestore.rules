@@ -17,7 +17,7 @@ service cloud.firestore {
 
     // TODO: keep this in sync with REDEEM_COST in portal/firebase-init.js
     function redeemCost() {
-      return 50;
+      return 100;
     }
 
     match /customers/{uid} {
@@ -37,7 +37,8 @@ service cloud.firestore {
                     && request.resource.data.uid == request.auth.uid
                     && request.resource.data.status == 'pending'
                     && request.resource.data.creditsAwarded == 0
-                    && request.resource.data.proofType in ['google_review', 'instagram_post', 'instagram_story'];
+                    && request.resource.data.proofType in ['google_review', 'instagram_post', 'instagram_story', 'bill_amount']
+                    && (request.resource.data.proofType != 'bill_amount' || (request.resource.data.billAmount is number && request.resource.data.billAmount > 0));
       allow update: if isStaff();
       allow delete: if false;
     }
