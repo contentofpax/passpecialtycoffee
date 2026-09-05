@@ -17,7 +17,7 @@ service cloud.firestore {
 
     // TODO: keep this in sync with MIN_REDEEM_CREDITS in portal/firebase-init.js
     function minRedeemCost() {
-      return 200;
+      return 100;
     }
 
     match /customers/{uid} {
