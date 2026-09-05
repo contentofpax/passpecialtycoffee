@@ -15,9 +15,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // TODO: keep this in sync with MIN_REDEEM_CREDITS in portal/firebase-init.js
+    // TODO: keep these in sync with MIN_REDEEM_CREDITS / MAX_REDEEM_CREDITS in portal/firebase-init.js
     function minRedeemCost() {
       return 100;
+    }
+    function maxRedeemCost() {
+      return 500;
     }
 
     match /customers/{uid} {
@@ -41,7 +44,8 @@ service cloud.firestore {
                         && request.resource.data.uid == resource.data.uid
                         && request.resource.data.amount == resource.data.amount
                         && request.resource.data.expiresAt == resource.data.expiresAt
-                        && request.resource.data.earnedAt == resource.data.earnedAt);
+                        && request.resource.data.earnedAt == resource.data.earnedAt
+                        && request.resource.data.expiredFlag == true);
       allow delete: if false;
     }
 
@@ -64,6 +68,7 @@ service cloud.firestore {
                     && request.resource.data.status == 'pending'
                     && request.resource.data.creditsCost is number
                     && request.resource.data.creditsCost >= minRedeemCost()
+                    && request.resource.data.creditsCost <= maxRedeemCost()
                     && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.credits >= request.resource.data.creditsCost;
       allow update: if isStaff();
       allow delete: if false;
