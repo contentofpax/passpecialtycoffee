@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Staff — Approvals — PAS Specialty Coffee</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#0d63a9;--brand:#2b5faa;--pale:#f0f5fc;--cream:#faf8f4;--gold:#c9a96e;--white:#fff;--txt:#0f2340;--mid:#2a4a7a;--muted:#6b85a8;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',sans-serif;--err:#e0685a;--ok:#4caf7d;}
+body{font-family:var(--sans);background:var(--cream);color:var(--txt);margin:0}
+.swrap{max-width:900px;margin:0 auto;padding:44px 5vw 80px}
+.shdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.shdr h1{font-family:var(--serif);font-size:32px;font-weight:300}
+.shdr h1 em{font-style:italic;color:var(--brand)}
+.shdr p{font-size:13px;color:var(--muted);margin-bottom:32px}
+.logout{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:underline;background:none;border:none;cursor:pointer;font-family:var(--sans)}
+.card{background:var(--white);border:1px solid rgba(43,95,170,.1);border-radius:6px;padding:26px 28px;margin-bottom:26px}
+.card h2{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:16px}
+.empty{font-size:12px;color:var(--muted);font-style:italic}
+.req{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid var(--pale);flex-wrap:wrap}
+.req:last-child{border-bottom:none}
+.req-main{min-width:220px;flex:1}
+.req-title{font-size:13px;font-weight:500}
+.req-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.6}
+.req-sub a{color:var(--brand)}
+.req-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:20px;white-space:nowrap;font-weight:500;flex-shrink:0}
+.badge.approved{background:rgba(76,175,125,.15);color:#2e8a5c}
+.badge.rejected{background:rgba(224,104,90,.12);color:#b8493a}
+.creditinput{width:64px;padding:8px;border:1px solid rgba(43,95,170,.2);border-radius:2px;font-family:var(--sans);font-size:13px;text-align:center}
+.btnok{background:var(--ok);color:var(--white);border:none;padding:9px 16px;border-radius:2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.btnrej{background:none;color:var(--err);border:1px solid var(--err);padding:9px 16px;border-radius:2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.btnok:disabled,.btnrej:disabled{opacity:.4;cursor:not-allowed}
+.notauth{text-align:center;padding:80px 20px}
+.notauth h1{font-family:var(--serif);font-size:28px;font-weight:300;margin-bottom:10px}
+.notauth p{font-size:13px;color:var(--muted)}
+.dist-ok{color:#2e8a5c}.dist-warn{color:#b8493a}
+</style></head><body>
+
+<div class="swrap" id="app" style="display:none">
+  <div class="shdr">
+    <h1>Staff <em>Approvals.</em></h1>
+    <div style="display:flex;align-items:center;gap:18px">
+      <a href="/portal/dashboard/" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);text-decoration:underline">My Account</a>
+      <button class="logout" onclick="doLogout()">Log Out</button>
+    </div>
+  </div>
+  <p>Review visit claims and redemption requests. Approvals credit the customer's account immediately.</p>
+
+  <div class="card">
+    <h2>Pending Visit Claims</h2>
+    <div id="visitsList"><div class="empty">Nothing pending.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Pending Redemption Requests</h2>
+    <div id="redemptionResult" style="display:none;background:rgba(76,175,125,.1);border:1px solid rgba(76,175,125,.35);color:#2e8a5c;padding:14px 16px;border-radius:4px;margin-bottom:16px;font-size:14px"></div>
+    <div id="redemptionsList"><div class="empty">Nothing pending.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Redeem a Coupon Code</h2>
+    <p class="empty" style="margin-bottom:14px">Customer shows their code at the counter — enter it here to mark it used so it can't be reused.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <input type="text" id="couponLookup" placeholder="PAS-XXXXXX" style="width:180px;padding:10px 12px;border:1px solid rgba(43,95,170,.2);border-radius:2px;font-family:var(--sans);font-size:13px;text-transform:uppercase">
+      <button class="btnok" onclick="redeemCoupon()">Mark Redeemed</button>
+    </div>
+    <div id="couponLookupMsg" style="font-size:12px;margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h2>History — Visit Claims</h2>
+    <div id="visitHistoryList"><div class="empty">Nothing yet.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>History — Redemptions</h2>
+    <div id="redemptionHistoryList"><div class="empty">Nothing yet.</div></div>
+  </div>
+</div>
+
+<div class="notauth" id="notauth" style="display:none">
+  <h1>Not <em style="font-style:italic;color:var(--brand)">authorized.</em></h1>
+  <p>This account doesn't have staff access. Contact the site admin if this seems wrong.</p>
+</div>
+
+<script type="module">
+import { auth, db, creditsForProof, couponExpiryDate, isCouponExpired, creditGrantExpiryDate, toJsDate } from "/portal/firebase-init.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { collection, query, where, orderBy, limit, onSnapshot, getDocs, doc, updateDoc, addDoc, increment, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+let staffUid = null;
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) { location.href = '/portal/?next=' + encodeURIComponent(location.pathname); return; }
+  staffUid = user.uid;
+  loadVisits();
+  loadRedemptions();
+  loadVisitHistory();
+  loadRedemptionHistory();
+});
+
+window.doLogout = function(){ signOut(auth).then(() => location.href = '/portal/'); };
+
+function typeLabel(t){
+  return { google_review: 'Google Review', instagram_post: 'Instagram Post', instagram_story: 'Instagram Story', bill_amount: 'Bill Amount' }[t] || escapeHtml(t);
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function safeLinkHtml(link){
+  if (!link) return '';
+  const esc = escapeHtml(link);
+  if (/^https?:\/\//i.test(link)) return '<a href="' + esc + '" target="_blank" rel="noopener noreferrer">' + esc + '</a>';
+  return esc;
+}
+
+function loadVisits(){
+  const list = document.getElementById('visitsList');
+  const q = query(collection(db, 'visits'), where('status', '==', 'pending'), orderBy('submittedAt', 'asc'));
+  onSnapshot(q, (snap) => {
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('notauth').style.display = 'none';
+    if (snap.empty) { list.innerHTML = '<div class="empty">Nothing pending.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach((d) => {
+      const v = d.data();
+      const distText = v.distanceMeters == null ? 'no location' : (v.distanceMeters <= 300 ? '<span class="dist-ok">' + v.distanceMeters + 'm away</span>' : '<span class="dist-warn">' + (v.distanceMeters/1000).toFixed(1) + 'km away</span>');
+      const row = document.createElement('div');
+      row.className = 'req';
+      const photoHtml = v.proofImageUrl ? '<a href="' + v.proofImageUrl + '" target="_blank" rel="noopener noreferrer"><img src="' + v.proofImageUrl + '" alt="Uploaded proof" loading="lazy" style="max-width:140px;max-height:100px;border-radius:4px;display:block;margin-top:8px;object-fit:cover"></a>' : '';
+      const billText = v.proofType === 'bill_amount' ? ' &middot; Bill: ₹' + (v.billAmount || 0) : '';
+      const suggestedCredits = creditsForProof(v.proofType, v.billAmount);
+      row.innerHTML =
+        '<div class="req-main">' +
+          '<div class="req-title">' + escapeHtml(v.name) + ' &middot; ' + escapeHtml(v.phone) + ' &middot; ' + typeLabel(v.proofType) + billText + '</div>' +
+          '<div class="req-sub">' + distText + (v.proofLink ? ' &middot; ' + safeLinkHtml(v.proofLink) : '') + (v.proofNote ? ' &middot; ' + escapeHtml(v.proofNote) : '') + '</div>' +
+          photoHtml +
+        '</div>' +
+        '<div class="req-actions">' +
+          '<input type="number" class="creditinput" value="' + suggestedCredits + '" min="1" id="credits-' + d.id + '">' +
+          '<button class="btnok" onclick="approveVisit(\'' + d.id + '\', \'' + v.uid + '\')">Approve</button>' +
+          '<button class="btnrej" onclick="rejectVisit(\'' + d.id + '\')">Reject</button>' +
+        '</div>';
+      list.appendChild(row);
+    });
+  }, (err) => {
+    if (err.code === 'permission-denied') {
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('notauth').style.display = 'block';
+    }
+  });
+}
+
+function loadRedemptions(){
+  const list = document.getElementById('redemptionsList');
+  const q = query(collection(db, 'redemptionRequests'), where('status', '==', 'pending'), orderBy('createdAt', 'asc'));
+  onSnapshot(q, (snap) => {
+    if (snap.empty) { list.innerHTML = '<div class="empty">Nothing pending.</div>'; return; }
+    list.innerHTML = '';
+    snap.forEach((d) => {
+      const r = d.data();
+      const cost = Number(r.creditsCost) || 0;
+      const row = document.createElement('div');
+      row.className = 'req';
+      row.innerHTML =
+        '<div class="req-main"><div class="req-title">' + escapeHtml(r.name) + ' &middot; ' + escapeHtml(r.phone) + ' &middot; ' + cost + ' credits</div>' +
+          (r.refCode ? '<div class="req-sub">Customer\'s code: <strong>' + escapeHtml(r.refCode) + '</strong></div>' : '') +
+        '</div>' +
+        '<div class="req-actions">' +
+          '<button class="btnok" onclick="approveRedemption(\'' + d.id + '\', \'' + r.uid + '\', ' + cost + ')">Approve</button>' +
+          '<button class="btnrej" onclick="rejectRedemption(\'' + d.id + '\')">Reject</button>' +
+        '</div>';
+      list.appendChild(row);
+    });
+  }, () => {});
+}
+
+function loadVisitHistory(){
+  const list = document.getElementById('visitHistoryList');
+  const q = query(collection(db, 'visits'), orderBy('submittedAt', 'desc'), limit(100));
+  onSnapshot(q, (snap) => {
+    const rows = snap.docs.filter((d) => d.data().status !== 'pending');
+    if (rows.length === 0) { list.innerHTML = '<div class="empty">Nothing yet.</div>'; return; }
+    list.innerHTML = '';
+    rows.forEach((d) => {
+      const v = d.data();
+      const date = v.reviewedAt ? toJsDate(v.reviewedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const creditsText = v.status === 'approved' ? ' &middot; +' + (v.creditsAwarded || 0) + ' credits' : '';
+      const photoHtml = v.proofImageUrl ? '<a href="' + v.proofImageUrl + '" target="_blank" rel="noopener noreferrer"><img src="' + v.proofImageUrl + '" alt="Uploaded proof" loading="lazy" style="max-width:100px;max-height:70px;border-radius:4px;display:block;margin-top:8px;object-fit:cover"></a>' : '';
+      const row = document.createElement('div');
+      row.className = 'req';
+      row.innerHTML =
+        '<div class="req-main"><div class="req-title">' + escapeHtml(v.name) + ' &middot; ' + escapeHtml(v.phone) + ' &middot; ' + typeLabel(v.proofType) + creditsText + '</div>' +
+          '<div class="req-sub">' + date + '</div>' +
+          photoHtml +
+        '</div>' +
+        '<span class="badge ' + (v.status === 'approved' ? 'approved' : 'rejected') + '">' + v.status + '</span>';
+      list.appendChild(row);
+    });
+  }, () => {});
+}
+
+function loadRedemptionHistory(){
+  const list = document.getElementById('redemptionHistoryList');
+  const q = query(collection(db, 'redemptionRequests'), orderBy('createdAt', 'desc'), limit(100));
+  onSnapshot(q, (snap) => {
+    const rows = snap.docs.filter((d) => d.data().status !== 'pending');
+    if (rows.length === 0) { list.innerHTML = '<div class="empty">Nothing yet.</div>'; return; }
+    list.innerHTML = '';
+    rows.forEach((d) => {
+      const r = d.data();
+      const date = r.reviewedAt ? toJsDate(r.reviewedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const codeText = r.couponCode ? ' &middot; Code: <strong>' + escapeHtml(r.couponCode) + '</strong>' : '';
+      const row = document.createElement('div');
+      row.className = 'req';
+      row.innerHTML =
+        '<div class="req-main"><div class="req-title">' + escapeHtml(r.name) + ' &middot; ' + escapeHtml(r.phone) + ' &middot; ' + (Number(r.creditsCost) || 0) + ' credits' + codeText + '</div>' +
+          '<div class="req-sub">' + date + '</div>' +
+        '</div>' +
+        '<span class="badge ' + (r.status === 'approved' ? 'approved' : 'rejected') + '">' + r.status + '</span>';
+      list.appendChild(row);
+    });
+  }, () => {});
+}
+
+function randomCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'PAS-';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+async function genUniqueCode(){
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const code = randomCode();
+    const existing = await getDocs(query(collection(db, 'coupons'), where('code', '==', code)));
+    if (existing.empty) return code;
+  }
+  throw new Error('Could not generate a unique code, please try again.');
+}
+
+window.approveVisit = async function(visitId, uid){
+  const credits = parseInt(document.getElementById('credits-' + visitId).value, 10) || 0;
+  if (credits <= 0) { alert('Enter a credit amount greater than 0.'); return; }
+  const now = new Date();
+  await addDoc(collection(db, 'creditGrants'), {
+    uid, amount: credits, remaining: credits,
+    earnedAt: now, expiresAt: creditGrantExpiryDate(now),
+    source: 'visit', sourceId: visitId, expiredFlag: false
+  });
+  await updateDoc(doc(db, 'visits', visitId), { status: 'approved', creditsAwarded: credits, reviewedAt: serverTimestamp(), reviewedBy: staffUid });
+  await updateDoc(doc(db, 'customers', uid), { credits: increment(credits) });
+};
+
+// Spends `cost` credits from the customer's oldest non-expired grants first (FIFO),
+// so a redemption naturally uses up credits that would otherwise expire soonest.
+async function consumeCreditsFIFO(uid, cost){
+  const q = query(collection(db, 'creditGrants'), where('uid', '==', uid), orderBy('earnedAt', 'asc'));
+  const snap = await getDocs(q);
+  const now = new Date();
+  let toConsume = cost;
+  const batch = writeBatch(db);
+  snap.forEach((docSnap) => {
+    if (toConsume <= 0) return;
+    const g = docSnap.data();
+    if (g.remaining <= 0 || toJsDate(g.expiresAt) < now) return;
+    const take = Math.min(g.remaining, toConsume);
+    batch.update(docSnap.ref, { remaining: g.remaining - take });
+    toConsume -= take;
+  });
+  await batch.commit();
+}
+
+window.rejectVisit = async function(visitId){
+  await updateDoc(doc(db, 'visits', visitId), { status: 'rejected', reviewedAt: serverTimestamp(), reviewedBy: staffUid });
+};
+
+window.approveRedemption = async function(reqId, uid, cost){
+  const code = await genUniqueCode();
+  await consumeCreditsFIFO(uid, cost);
+  const couponRef = await addDoc(collection(db, 'coupons'), { uid, code, creditsCost: cost, status: 'available', createdAt: serverTimestamp(), expiresAt: couponExpiryDate() });
+  await updateDoc(doc(db, 'customers', uid), { credits: increment(-cost) });
+  await updateDoc(doc(db, 'redemptionRequests', reqId), { status: 'approved', reviewedAt: serverTimestamp(), reviewedBy: staffUid, couponCode: code });
+
+  const box = document.getElementById('redemptionResult');
+  box.innerHTML = 'Approved — ₹' + cost + ' off. Code: <strong style="font-size:18px;letter-spacing:.05em">' + code + '</strong> &nbsp; ' +
+    '<button class="btnok" style="margin-left:10px" onclick="markRedeemedNow(\'' + couponRef.id + '\', this)">Mark Redeemed Now (applying to this bill)</button>';
+  box.style.display = 'block';
+};
+
+window.markRedeemedNow = async function(couponId, btn){
+  await updateDoc(doc(db, 'coupons', couponId), { status: 'redeemed', redeemedAt: serverTimestamp(), redeemedBy: staffUid });
+  btn.disabled = true;
+  btn.textContent = 'Marked redeemed ✓';
+};
+
+window.rejectRedemption = async function(reqId){
+  await updateDoc(doc(db, 'redemptionRequests', reqId), { status: 'rejected', reviewedAt: serverTimestamp(), reviewedBy: staffUid });
+};
+
+window.redeemCoupon = async function(){
+  const msg = document.getElementById('couponLookupMsg');
+  const code = document.getElementById('couponLookup').value.trim().toUpperCase();
+  msg.style.color = 'var(--muted)';
+  msg.textContent = 'Looking up...';
+  if (!code) { msg.textContent = 'Enter a code.'; return; }
+  try {
+    const q = query(collection(db, 'coupons'), where('code', '==', code));
+    const snap = await getDocs(q);
+    if (snap.empty) { msg.style.color = 'var(--err)'; msg.textContent = 'No coupon found with that code.'; return; }
+    const d = snap.docs[0];
+    if (d.data().status === 'redeemed') { msg.style.color = 'var(--err)'; msg.textContent = 'This coupon was already redeemed.'; return; }
+    if (isCouponExpired(d.data())) { msg.style.color = 'var(--err)'; msg.textContent = 'This coupon expired and can no longer be used.'; return; }
+    await updateDoc(doc(db, 'coupons', d.id), { status: 'redeemed', redeemedAt: serverTimestamp(), redeemedBy: staffUid });
+    msg.style.color = 'var(--ok)';
+    msg.textContent = 'Marked redeemed.';
+    document.getElementById('couponLookup').value = '';
+  } catch (e) {
+    msg.style.color = 'var(--err)';
+    msg.textContent = 'Something went wrong. Please try again.';
+    console.error(e);
+  }
+};
+</script>
+</body></html>
